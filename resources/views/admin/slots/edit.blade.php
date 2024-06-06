@@ -12,12 +12,13 @@
             </div>
             <div class="m-2 p-2 bg-slate-100 rounded">
                 <div class="space-y-8 divide-y divide-gray-200 w-1/2 mt-10">
-                    <form method="POST" action="{{ route('admin.slots.store') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('admin.slots.update', $slot->id) }}" enctype="multipart/form-data">
                         @csrf
+                        @method('PUT')
                         <div class="sm:col-span-6">
                             <label for="name" class="block text-sm font-medium text-gray-700"> Name </label>
                             <div class="mt-1">
-                                <input type="text" id="name" name="name" class="block w-full transition duration-150 ease-in-out appearance-none bg-white border border-gray-400 rounded-md py-2 px-3 text-base leading-normal transition duration-150 ease-in-out sm:text-sm sm:leading-5" />
+                                <input type="text" id="name" name="name" value="{{ $slot->name }}" class="block w-full transition duration-150 ease-in-out appearance-none bg-white border border-gray-400 rounded-md py-2 px-3 text-base leading-normal transition duration-150 ease-in-out sm:text-sm sm:leading-5" />
                             </div>
                         </div>
                         <div class="sm:col-span-6 pt-5">
@@ -25,7 +26,7 @@
                             <div class="mt-1">
                                 <select id="status" name="status" class="form-multiselect block w-full mt-1">
                                     @foreach(App\Enums\SlotStatus::cases() as $status)
-                                    <option value="{{ $status->value }}">{{ $status->name }}</option>
+                                    <option value="{{ $status->value }}" @selected($slot->status->value == $status->value)>{{ $status->name }}</option>
                                     @endforeach
                                 </select>
                             </div>

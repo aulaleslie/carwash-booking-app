@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SlotStoreRequest;
 use App\Models\Slot;
 use Illuminate\Http\Request;
 
@@ -35,9 +36,14 @@ class SlotController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SlotStoreRequest $request)
     {
-        //
+        Slot::create([
+            'name' => $request->name,
+            'status' => $request->status
+        ]);
+
+        return to_route('admin.slots.index');
     }
 
     /**
@@ -57,9 +63,9 @@ class SlotController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Slot $slot)
     {
-        //
+        return view('admin.slots.edit', compact('slot'));
     }
 
     /**
@@ -69,9 +75,19 @@ class SlotController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Slot $slot)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'status' => 'required'
+        ]);
+
+        $slot->update([
+            'name' => $request->name,
+            'status' => $request->status
+        ]);
+
+        return to_route('admin.slots.index');
     }
 
     /**
@@ -80,8 +96,9 @@ class SlotController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Slot $slot)
     {
-        //
+        $slot->delete();
+        return to_route('admin.slots.index');
     }
 }
