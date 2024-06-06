@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone_number');
             $table->dateTime('res_date');
+            $table->foreignId("slot_id")->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

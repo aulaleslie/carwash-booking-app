@@ -8,4 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Reservation extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'phone_number',
+        'email',
+        'slot_id',
+        'res_date'
+    ];
+
+    public function slot()
+    {
+        return $this->belongsTo(Slot::class);
+    }
 }

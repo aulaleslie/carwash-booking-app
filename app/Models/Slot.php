@@ -13,4 +13,9 @@ class Slot extends Model
     protected $casts = [
         'status' => SlotStatus::class
     ];
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
 }
