@@ -43,7 +43,7 @@ class SlotController extends Controller
             'status' => $request->status
         ]);
 
-        return to_route('admin.slots.index');
+        return to_route('admin.slots.index')->with('success', 'Slot created successfully');
     }
 
     /**
@@ -87,7 +87,7 @@ class SlotController extends Controller
             'status' => $request->status
         ]);
 
-        return to_route('admin.slots.index');
+        return to_route('admin.slots.index')->with('success', 'Slot updated successfully');
     }
 
     /**
@@ -98,7 +98,8 @@ class SlotController extends Controller
      */
     public function destroy(Slot $slot)
     {
+        $slot->reservations()->delete();
         $slot->delete();
-        return to_route('admin.slots.index');
+        return to_route('admin.slots.index')->with('success', 'Slot deleted successfully');
     }
 }

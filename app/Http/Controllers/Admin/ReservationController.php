@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ReservationStoreRequest;
 use App\Models\Reservation;
 use App\Models\Slot;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ReservationController extends Controller
@@ -40,9 +41,19 @@ class ReservationController extends Controller
      */
     public function store(ReservationStoreRequest $request)
     {
+        $slot = Slot::findOrFail($request->slot_id);
+        $reserved_date = Carbon::parse($request->res_date);
+
+        foreach($slot->reservations as $reservation) {
+            if ($reservation->res_date->format('Y-m-d') == $reserved_date->format('Y-m-d')) {
+                return back()->with('warning', 'This slot is reserved for the selected time');
+            }
+        }
+
+
         Reservation::create($request->validated());
 
-        return to_route('admin.reservations.index');
+        return to_route('admin.reservations.index')->with('success', 'Reservation created successfully');
     }
 
     /**
@@ -95,7 +106,7 @@ class ReservationController extends Controller
             'slot_id' => $request->slot_id
         ]);
 
-        return to_route('admin.reservations.index');
+        return to_route('admin.reservations.index')->with('success', 'Reservation updated successfully');
     }
 
     /**
@@ -107,6 +118,6 @@ class ReservationController extends Controller
     public function destroy(Reservation $reservation)
     {
         $reservation->delete();
-        return to_route('admin.reservations.index');
+        return to_route('admin.reservations.index')->with('success', 'Reservation deleted successfully');
     }
 }

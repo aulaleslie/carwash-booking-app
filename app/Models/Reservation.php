@@ -18,6 +18,10 @@ class Reservation extends Model
         'res_date'
     ];
 
+    protected $dates = [
+        'res_date'
+    ];
+
     public function slot()
     {
         return $this->belongsTo(Slot::class);
