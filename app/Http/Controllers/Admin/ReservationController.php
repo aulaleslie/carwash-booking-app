@@ -30,7 +30,9 @@ class ReservationController extends Controller
     public function create()
     {
         $slots = Slot::all();
-        return view('admin.reservations.create', compact('slots'));
+        $min_date = Carbon::now();
+        $max_date = Carbon::now()->addWeek();
+        return view('admin.reservations.create', compact('slots', 'min_date', 'max_date'));
     }
 
     /**
